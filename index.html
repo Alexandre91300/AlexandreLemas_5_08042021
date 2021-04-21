@@ -14,25 +14,24 @@
 <body>
     <header class="header">
         <p class="header__title"><a href="index.html">Orinoco</a></p>
-        <a href="./html/panier.html"><i class="fas fa-shopping-cart header__icon"></i></a>
+        <a href="./html/panier.html"><i class="fas fa-shopping-cart header__icon"></i>
+            <span class="header__count" id="counter">0</span>
+        </a>
+
     </header>
 
     <section class="article">
         <h1 class="article__title">Articles</h1>
-        <div class="article__container" id="container">
-            
-            <!-- Modèle d'article -->
-
-            <!-- <div class="article__container__box">
-                <img class="article__container__box__img" src="http://localhost:3000/images/teddy_1.jpg" alt="image produit">
-                <h2 class="article__container__box__title">Nom du produit</h2>
-                <p class="article__container__box__price">10.99€</p>
-                <button class="article__container__box__btn article__container__box__btn--add">Ajouter au panier</button>
-                <button class="article__container__box__btn">Détails</button>
-            </div>  -->
-
-
+        <div class="lds-ellipsis" id="loader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
+        <span class="display-none" id="errorGestion">Aïe :/ il semblerait qu'une erreur soit survenue.
+            Merci de recharger la page, si l'erreur persiste merci de nous la signaler
+            via Orinico.contact@fakemail.com :)</span>
+        <div class="article__container" id="container"></div>
     </section>
 
     <footer class="footer">

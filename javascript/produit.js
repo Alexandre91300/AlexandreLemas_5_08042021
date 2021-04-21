@@ -1,23 +1,36 @@
+// - DEFINITION DES VARIABLES -
+//   ************************
+
+let loader = document.getElementById("loader");
+let errorHtml = document.getElementById("errorGestion");
+
+
+
 var idOfProduct = localStorage.id;
-
-
 var product = [];
 
-var request = new XMLHttpRequest(); // On crée un nouvel objet de type  XMLHttpRequest  qui correspond à notre objet AJAX. C'est grâce à lui qu'on va créer et envoyer notre requête 
-request.onreadystatechange = function () {
-    if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-        let response = JSON.parse(this.responseText);
-        product = response;
-        console.log(product);
-        productHtml(product);
 
-    }
-};
-request.open("GET", `http://localhost:3000/api/teddies/${idOfProduct}`);
-request.send(); // on envoie finalement la requête au service web
+// - DEFINITION DES FONCTIONS -
+//   ************************
 
+// Récupération des données de l'API en fonction de l'Id du produit
+function callApi() {
+    fetch(`http://localhost:3000/api/teddies/${idOfProduct}`)
+        .then(response => response.json())
+        .then(json => {
+            product = json;
+            loader.classList.add("display-none");
+            displayHtml(product);
+        })
+        .catch(err => {
+            console.log(err);
+            loader.classList.add("display-none");
+            errorHtml.classList.remove("display-none");
+        });
+}
 
-function productHtml(element) {
+// Affichage de la fiche produit par ajout de HTML 
+function displayHtml(element) {
     let parent = document.getElementById("produit");
     parent.insertAdjacentHTML('beforeend', `
     <img class="produit__img"  src="${element.imageUrl}" alt="">
@@ -34,29 +47,56 @@ function productHtml(element) {
                 <button type="button" onclick="addPanier('${element._id}')">Ajouter au panier</button>
             </form>
         </div>
-
-`);
-
-
-    for (const color of element.colors) {
+        `);
+    for (let color of element.colors) {
         let container = document.getElementById("selectColor");
         container.insertAdjacentHTML('beforeend', `
                     <option>${color}</option>
-`);
+        `);
     }
 };
 
-function addPanier(id){
+// Ajoute un élément au panier stocké dans le localStorage
+// Fonction appelé dans le HTML
+function addPanier(id) {
     let panierBefore = JSON.parse(localStorage.panier);
-    var quantité = document.getElementById("quantité").value ;
-    console.log(quantité);
+    var quantite = document.getElementById("quantité").value;
 
-    for(let element of panierBefore){
+    for (let element of panierBefore) {
 
-        if (element._id == id){
-            element.quantite += quantité;
+        if (element._id == id) {
+            for (let i = quantite; i > 0; i--) {
+                element.quantite += 1;
+                element.quantite *= 1;
+            }
         }
-        
     }
-    localStorage.setItem("panier",JSON.stringify(panierBefore));
+    localStorage.setItem("panier", JSON.stringify(panierBefore));
+    displayPanierCount()
 }
+
+// Affiche le nombre d'articles dans le panier du header
+function displayPanierCount() {
+    let totalArticle = 0;
+    let counter = document.getElementById("counter");
+    let panier = JSON.parse(localStorage.panier);
+    for (let element of panier) {
+        if (element.quantite > 0) {
+            totalArticle += element.quantite;
+            totalArticle *= 1;
+        }
+    }
+
+    if (totalArticle === 0) {
+        counter.classList.add("display-none");
+    } else {
+        counter.classList.remove("display-none");
+        counter.textContent = `${totalArticle}`;
+    }
+}
+
+
+// - APPEL DES FONCTIONS -
+//   *******************
+callApi()
+displayPanierCount()

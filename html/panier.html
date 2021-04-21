@@ -21,15 +21,24 @@
             <h1 class="panier__ctn__title">Panier</h1>
         </div>
 
-        <form class="panier__form">
-                <h2 class="panier__form__total" id="total">TOTAL : 100€</h2>
-                <input type="text" id="nom" placeholder="Nom">
-                <input type="text" id="prénom" placeholder="Prénom">
-                <input type="text" id="adresse" placeholder="Adresse">
-                <input type="text" id="ville" placeholder="Ville">
-                <input type="email" id="email" placeholder="E-mail">
-                <button type="submit">Acheter</button>
+        <form class="panier__form" id="form">
+            <h2 class="panier__form__total" id="totalForm">TOTAL : </h2>
 
+            <span class="panier__form__error display-none" id="lastNameError">Le nom doit être seulement composé des lettres de l'alphabet.</span>
+            <input type="text" id="lastName" placeholder="Nom" required onchange="formValidity()">
+
+            <span class="panier__form__error display-none" id="firstNameError">Le prénom doit être seulement composé des lettres de l'alphabet.</span>
+            <input type="text" id="firstName" placeholder="Prénom" required onchange="formValidity()">
+
+            <span class="panier__form__error display-none" id="addressError">L'adresse doit être seulement composée de lettres et de chiffres.</span>
+            <input type="text" id="address" placeholder="Adresse" required onchange="formValidity()">
+
+            <span class="panier__form__error display-none" id="cityError">Le nom de la ville doit être seulement composé des lettres de l'alphabet.</span>
+            <input type="text" id="city" placeholder="Ville" required onchange="formValidity()">
+
+            <input type="email" id="email" placeholder="E-mail" required>
+
+            <button type="submit" id="btn">Acheter</button>
         </form>
     </section>
 
