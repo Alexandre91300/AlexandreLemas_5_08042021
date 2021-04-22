@@ -10,6 +10,8 @@
 
     $ cd JWDP5-master
 
+    $ npm install
+    
     $ npm start
 
 3 - Ouvrir le fichier index.html dans un navigateur
